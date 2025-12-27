@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEFINN DASHBOARD</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<body class="bg-gray-900 text-white">
+
+  <header class="bg-gray-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold tracking-wide">
+        DEFINN DASHBOARD
+      </h1>
+
+      <div class="space-x-3">
+        <button onclick="openLogin()" class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+          Login
+        </button>
+        <button onclick="openSignup()" class="px-4 py-2 bg-emerald-600 rounded-lg hover:bg-emerald-700 transition">
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-6 py-12 text-center">
+    <h2 class="text-3xl font-bold mb-4">
+      Welcome to Your Finance Control Center
+    </h2>
+    <p class="text-gray-300 max-w-2xl mx-auto">
+      Manage payments, trade cryptocurrencies, and monitor stock investments
+      from one unified, modern interface.
+    </p>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <a href="payment.html"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-wallet text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Payments</h3>
+        <p class="text-sm text-gray-200">
+          Send, receive, and track your fiat transactions effortlessly.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Payments
+        </button>
+      </div>
+    </a>
+
+    <a href="crypto.html"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-emerald-500 to-teal-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-coins text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Crypto Trading</h3>
+        <p class="text-sm text-gray-200">
+          Buy, sell, and analyze digital assets in real-time.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Crypto
+        </button>
+      </div>
+    </a>
+
+    <a href="stock.html"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-pink-500 to-rose-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-chart-line text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Stock Market</h3>
+        <p class="text-sm text-gray-200">
+          Track market trends and manage your stock portfolio.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Stocks
+        </button>
+      </div>
+    </a>
+
+  </section>
+
+  <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
+    © 2025 DEFINN DASHBOARD. All rights reserved.
+  </footer>
+
+  <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-2xl w-96 shadow-xl">
+      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Email</label>
+          <input type="email" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Password</label>
+          <input type="password" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <button class="w-full py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+          Login
+        </button>
+
+        <button type="button" onclick="closeLogin()" class="w-full mt-3 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="signupModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-2xl w-96 shadow-xl">
+      <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+
+      <form onsubmit="handleSignup(event)">
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Full Name</label>
+          <input type="text" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Email</label>
+          <input type="email" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Password</label>
+          <input type="password" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <button class="w-full py-2 bg-emerald-600 rounded-lg hover:bg-emerald-700 transition">
+          Create Account
+        </button>
+
+        <button type="button" onclick="closeSignup()" class="w-full mt-3 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openLogin() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+    function closeLogin() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function openSignup() {
+      document.getElementById('signupModal').classList.remove('hidden');
+    }
+    function closeSignup() {
+      document.getElementById('signupModal').classList.add('hidden');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      alert('Login submitted. Connect this to backend logic.');
+      closeLogin();
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      alert('Signup submitted. Connect this to backend logic.');
+      closeSignup();
+    }
+  </script>
+
+</body>
+</html>
