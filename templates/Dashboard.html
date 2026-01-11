@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEFINN DASHBOARD</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+
+<body class="bg-gray-900 text-white">
+  <header class="bg-gray-800 shadow-lg">
+    
+   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+ 
+  <div class="flex items-center gap-3">
+    <img
+      src="{{ url_for('static', filename='logo.jpeg') }}"
+      class="w-8 h-8 object-contain"
+      alt="Logo"
+    />
+
+    <h1 class="text-2xl font-bold tracking-wide">
+      DEFINN DASHBOARD
+    </h1>
+  </div>
+
+  
+  <div>
+    <a
+      href="http://localhost:3000/logout"
+      class="px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition"
+    >
+      Logout
+    </a>
+  </div>
+
+</div>
+  </header>
+
+  <section class="max-w-7xl mx-auto px-6 py-12 text-center">
+    <h2 class="text-3xl font-bold mb-4">
+      Welcome to Your Finance Control Center
+    </h2>
+    <p class="text-gray-300 max-w-2xl mx-auto">
+      Manage payments, trade cryptocurrencies, and monitor stock investments
+      from one unified, modern interface.
+    </p>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <a href="http://localhost:3000/payments"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-wallet text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Payments</h3>
+        <p class="text-sm text-gray-200">
+          Send, receive, and track your fiat transactions effortlessly.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Payments
+        </button>
+      </div>
+    </a>
+
+    <a href="http://localhost:3000/crypto"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-emerald-500 to-teal-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-coins text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Crypto Trading</h3>
+        <p class="text-sm text-gray-200">
+          Buy, sell, and analyze digital assets in real-time.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Crypto
+        </button>
+      </div>
+    </a>
+
+    <a href="http://localhost:3000/stocks"
+       class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-pink-500 to-rose-700 hover:scale-105 transition transform">
+      <div class="flex flex-col items-center text-center">
+        <i class="fas fa-chart-line text-6xl mb-6"></i>
+        <h3 class="text-2xl font-semibold mb-3">Stock Market</h3>
+        <p class="text-sm text-gray-200">
+          Track market trends and manage your stock portfolio.
+        </p>
+        <button class="mt-6 px-5 py-2 bg-black/40 rounded-lg group-hover:bg-black/60 transition">
+          Open Stocks
+        </button>
+      </div>
+    </a>
+
+  </section>
+
+  <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
+    © 2026 DEFINN DASHBOARD
+  </footer>
+
+  <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-2xl w-96 shadow-xl">
+      <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+
+      <form onsubmit="handleLogin(event)">
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Email</label>
+          <input type="email" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Password</label>
+          <input type="password" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <button class="w-full py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+          Login
+        </button>
+
+        <button type="button" onclick="closeLogin()" class="w-full mt-3 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="signupModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
+    <div class="bg-gray-800 p-8 rounded-2xl w-96 shadow-xl">
+      <h2 class="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+
+      <form onsubmit="handleSignup(event)">
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Full Name</label>
+          <input type="text" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm mb-1">Email</label>
+          <input type="email" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-1">Password</label>
+          <input type="password" required class="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700">
+        </div>
+
+        <button class="w-full py-2 bg-emerald-600 rounded-lg hover:bg-emerald-700 transition">
+          Create Account
+        </button>
+
+        <button type="button" onclick="closeSignup()" class="w-full mt-3 py-2 bg-gray-600 rounded-lg hover:bg-gray-700 transition">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+      if (window.location.protocol === "file:") {
+    alert("Please run the Dashboard using localhost (python -m http.server 5500). MetaMask won't work in file:// mode.");
+  }
+
+    function openLogin() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+    function closeLogin() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+
+    function openSignup() {
+      document.getElementById('signupModal').classList.remove('hidden');
+    }
+    function closeSignup() {
+      document.getElementById('signupModal').classList.add('hidden');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      alert('Login submitted. Connect this to backend logic.');
+      closeLogin();
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      alert('Signup submitted. Connect this to backend logic.');
+      closeSignup();
+    }
+  </script>
+
+
+<div id="aiChatBtn" class="fixed bottom-6 right-6 z-50">
+  <button onclick="toggleChatbot()"
+    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-full shadow-xl flex items-center space-x-2">
+    <i class="fas fa-robot"></i>
+    <span>BitWiz</span>
+  </button>
+</div>
+
+<div id="aiChatPanel"
+  class="hidden fixed bottom-24 right-6 w-[360px] max-w-[90vw] bg-gray-900 text-white rounded-2xl shadow-2xl z-50 overflow-hidden border border-white/10">
+
+  <div class="flex items-center justify-between px-4 py-3 bg-gray-800">
+    <div class="font-semibold tracking-wide">
+      BitWiz Market Analyzer
+    </div>
+    <button onclick="toggleChatbot()" class="text-gray-300 hover:text-white">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div id="aiChatMessages" class="p-4 h-72 overflow-y-auto space-y-3 text-sm">
+    <div class="bg-white/10 p-3 rounded-xl">
+      Hello! Ask me things like:
+      <br>• <b>Portfolio summary</b>
+      <br>• <b>Should I buy BTC today?</b>
+      <br>• <b>Should I sell ETH?</b>
+    </div>
+  </div>
+
+  <div class="p-3 bg-gray-800 flex space-x-2">
+    <input id="aiChatInput"
+      class="flex-1 px-3 py-2 rounded-lg bg-gray-900 border border-white/10 focus:outline-none"
+      placeholder="Type your question..." />
+    <button onclick="sendChatMessage()"
+      class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-semibold">
+      Send
+    </button>
+  </div>
+</div>
+
+<script>
+  const BASE_URL = "http://localhost:3000";
+
+  function toggleChatbot() {
+    document.getElementById("aiChatPanel").classList.toggle("hidden");
+  }
+
+  function addMsg(text, fromUser=false) {
+    const box = document.getElementById("aiChatMessages");
+    const div = document.createElement("div");
+    div.className = fromUser
+      ? "bg-indigo-600/40 p-3 rounded-xl ml-8"
+      : "bg-white/10 p-3 rounded-xl mr-8";
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  async function sendChatMessage() {
+    const input = document.getElementById("aiChatInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMsg(msg, true);
+    input.value = "";
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/chat`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      if (res.status === 401) {
+        addMsg("Session expired. Please login again.");
+        window.location.href = `${BASE_URL}/login`;
+        return;
+      }
+
+      const data = await res.json();
+      addMsg(data.reply || "No response received.");
+    } catch (e) {
+      addMsg("Backend not reachable. Start Flask backend on port 3000.");
+    }
+  }
+
+  document.getElementById("aiChatInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendChatMessage();
+  });
+</script>
+
+</body>
+</html>
