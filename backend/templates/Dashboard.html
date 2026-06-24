@@ -12,22 +12,29 @@
 </head>
 
 <body class="bg-gray-900 text-white">
-
   <header class="bg-gray-800 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold tracking-wide">
-        DEFINN DASHBOARD
-      </h1>
+    
+   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-      <div class="space-x-3">
-        <button onclick="openLogin()" class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
-          Login
-        </button>
-        <button onclick="openSignup()" class="px-4 py-2 bg-emerald-600 rounded-lg hover:bg-emerald-700 transition">
-          Sign Up
-        </button>
-      </div>
-    </div>
+ 
+  <div class="flex items-center gap-3">
+    <img
+      src="{{ url_for('static', filename='logo.jpeg') }}"
+      class="w-8 h-8 object-contain"
+      alt="Logo"
+    />
+
+    <h1 class="text-2xl font-bold tracking-wide">
+      DEFINN DASHBOARD
+    </h1>
+  </div>
+
+   <button onclick="toggleSidebar()" class="text-white text-2xl">
+  ⋮
+</button>
+  
+
+</div>
   </header>
 
   <section class="max-w-7xl mx-auto px-6 py-12 text-center">
@@ -42,7 +49,7 @@
 
   <section class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 md:grid-cols-3 gap-8">
 
-    <a href="http://localhost:5500/payment.html"
+    <a href="http://localhost:3000/payments"
        class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-indigo-500 to-indigo-700 hover:scale-105 transition transform">
       <div class="flex flex-col items-center text-center">
         <i class="fas fa-wallet text-6xl mb-6"></i>
@@ -56,7 +63,7 @@
       </div>
     </a>
 
-    <a href="http://localhost:5500/crypto.html"
+    <a href="http://localhost:3000/crypto"
        class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-emerald-500 to-teal-700 hover:scale-105 transition transform">
       <div class="flex flex-col items-center text-center">
         <i class="fas fa-coins text-6xl mb-6"></i>
@@ -70,7 +77,7 @@
       </div>
     </a>
 
-    <a href="http://localhost:5500/stock.html"
+    <a href="http://localhost:3000/stocks"
        class="group rounded-2xl shadow-xl p-8 bg-gradient-to-br from-pink-500 to-rose-700 hover:scale-105 transition transform">
       <div class="flex flex-col items-center text-center">
         <i class="fas fa-chart-line text-6xl mb-6"></i>
@@ -87,7 +94,7 @@
   </section>
 
   <footer class="bg-gray-800 py-6 text-center text-gray-400 text-sm">
-    © 2025 DEFINN DASHBOARD. All rights reserved.
+    © 2026 DEFINN DASHBOARD
   </footer>
 
   <div id="loginModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center">
@@ -178,6 +185,214 @@
       closeSignup();
     }
   </script>
+
+
+<div id="aiChatBtn" class="fixed bottom-6 right-6 z-50">
+  <button onclick="toggleChatbot()"
+    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-3 rounded-full shadow-xl flex items-center space-x-2">
+    <i class="fas fa-robot"></i>
+    <span>BitWiz</span>
+  </button>
+</div>
+
+<div id="aiChatPanel"
+  class="hidden fixed bottom-24 right-6 w-[360px] max-w-[90vw] bg-gray-900 text-white rounded-2xl shadow-2xl z-50 overflow-hidden border border-white/10">
+
+  <div class="flex items-center justify-between px-4 py-3 bg-gray-800">
+    <div class="font-semibold tracking-wide">
+      BitWiz Market Analyzer
+    </div>
+    <button onclick="toggleChatbot()" class="text-gray-300 hover:text-white">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div id="aiChatMessages" class="p-4 h-72 overflow-y-auto space-y-3 text-sm">
+    <div class="bg-white/10 p-3 rounded-xl">
+      Hello! Ask me things like:
+      <br>• <b>Portfolio summary</b>
+      <br>• <b>Should I buy BTC today?</b>
+      <br>• <b>Should I sell ETH?</b>
+    </div>
+  </div>
+
+  <div class="p-3 bg-gray-800 flex space-x-2">
+    <input id="aiChatInput"
+      class="flex-1 px-3 py-2 rounded-lg bg-gray-900 border border-white/10 focus:outline-none"
+      placeholder="Type your question..." />
+    <button onclick="sendChatMessage()"
+      class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-semibold">
+      Send
+    </button>
+  </div>
+</div>
+
+<script>
+  const BASE_URL = "http://localhost:3000";
+
+  function toggleChatbot() {
+    document.getElementById("aiChatPanel").classList.toggle("hidden");
+  }
+
+  function addMsg(text, fromUser=false) {
+    const box = document.getElementById("aiChatMessages");
+    const div = document.createElement("div");
+    div.className = fromUser
+      ? "bg-indigo-600/40 p-3 rounded-xl ml-8"
+      : "bg-white/10 p-3 rounded-xl mr-8";
+    div.innerText = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  async function sendChatMessage() {
+    const input = document.getElementById("aiChatInput");
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMsg(msg, true);
+    input.value = "";
+
+    try {
+      const res = await fetch(`${BASE_URL}/api/chat`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      if (res.status === 401) {
+        addMsg("Session expired. Please login again.");
+        window.location.href = `${BASE_URL}/login`;
+        return;
+      }
+
+      const data = await res.json();
+      addMsg(data.reply || "No response received.");
+    } catch (e) {
+      addMsg("Backend not reachable. Start Flask backend on port 3000.");
+    }
+  }
+
+  document.getElementById("aiChatInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") sendChatMessage();
+  });
+
+  
+</script>
+<div id="profileSidebar"
+     class="fixed top-0 right-0 w-80 h-full
+            bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900
+            backdrop-blur-xl
+            text-white shadow-2xl
+            transform translate-x-full transition-transform duration-300
+            z-50 border-l border-white/10">
+
+  <!-- Close Button -->
+  <button onclick="toggleSidebar()"
+          class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+    <i class="fas fa-times"></i>
+  </button>
+
+  <div class="p-6 flex flex-col items-center space-y-6">
+
+    <!-- Profile Image -->
+    <div class="relative">
+      <img id="profilePreview"
+           src="https://via.placeholder.com/120"
+           class="w-28 h-28 rounded-full object-cover
+                  border-4 border-indigo-500 shadow-xl"/>
+
+      <!-- Glow Ring -->
+      <span class="absolute inset-0 rounded-full ring-4 ring-indigo-500/30 animate-pulse"></span>
+    </div>
+
+    <input type="file"
+           id="profileUpload"
+           accept="image/*"
+           class="hidden"
+           onchange="previewProfile(event)"/>
+
+    <button onclick="document.getElementById('profileUpload').click()"
+            class="bg-indigo-600/90 px-4 py-2 rounded-full
+                   hover:bg-indigo-700 transition shadow-lg">
+      Upload Photo
+    </button>
+
+    <!-- User Info -->
+    <div class="text-center">
+      <h2 id="sidebarName" class="text-xl font-semibold">Loading...</h2>
+      <p id="sidebarEmail" class="text-gray-400 text-sm">Loading...</p>
+    </div>
+
+    <!-- Wallet Info -->
+    <div class="w-full bg-white/5 rounded-xl p-4 shadow-inner">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-400 text-sm">Wallet Balance</span>
+        <span id="sidebarWallet" class="text-lg font-bold text-emerald-400">
+          ₹ --
+        </span>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="w-full space-y-3">
+      <a href="http://localhost:3000/payments"
+         class="block text-center bg-indigo-600/80 hover:bg-indigo-700
+                py-2 rounded-lg transition">
+        Payments
+      </a>
+
+      <a href="http://localhost:3000/logout"
+         class="block text-center bg-red-600/80 hover:bg-red-700
+                py-2 rounded-lg transition">
+        Logout
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById("profileSidebar");
+  sidebar.classList.toggle("translate-x-full");
+}
+
+// Preview uploaded image
+function previewProfile(event) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    document.getElementById("profilePreview").src = reader.result;
+  };
+  reader.readAsDataURL(event.target.files[0]);
+}
+
+// Load user profile from backend
+async function loadSidebarProfile() {
+  const res = await fetch("http://localhost:3000/api/profile", {
+    credentials: "include"
+  });
+
+  if (res.status === 401) {
+    window.location.href = "http://localhost:3000/login";
+    return;
+  }
+
+  const data = await res.json();
+
+  document.getElementById("sidebarName").innerText = data.name;
+  document.getElementById("sidebarEmail").innerText = data.email;
+
+  const w = await fetch("http://localhost:3000/api/wallet", { credentials: "include" });
+const wb = await w.json();
+document.getElementById("sidebarWallet").innerText =
+  "₹" + Number(wb.balance || 0).toFixed(2);
+
+}
+
+window.addEventListener("load", loadSidebarProfile);
+</script>
 
 </body>
 </html>

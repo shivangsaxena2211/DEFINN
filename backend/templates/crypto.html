@@ -24,14 +24,24 @@
       background-color: #f3ba2f;
       border-radius: 10px;
     }
+
+    img {
+    object-fit: contain;
+    }
+
+    
   </style>
+  <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
 </head>
 <body class="min-h-screen flex flex-col">
 
   <header class="bg-black border-b border-gray-800">
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
       <div class="flex items-center space-x-4">
-        <img src="definn.svg" alt="Binance Logo" class="h-8 w-8" width="50" height="50"/>
+        <img src="{{ url_for('static', filename='logo.jpeg') }}"
+     class="w-8 h-8 object-contain"
+     alt="Logo">
         <h1 class="text-yellow-400 font-bold text-xl">DEFINN</h1>
       </div>
       <nav class="hidden md:flex space-x-6 text-gray-300 font-semibold">
@@ -44,8 +54,7 @@
          Wallet: ₹0.00
         </span>
 
-        <button class="bg-yellow-400 text-black font-semibold px-4 py-1 rounded hover:bg-yellow-500 transition">Log In</button>
-        <button class="border border-yellow-400 text-yellow-400 font-semibold px-4 py-1 rounded hover:bg-yellow-400 hover:text-black transition">Register</button>
+        
       </div>
       <button class="md:hidden text-yellow-400 focus:outline-none">
         <i class="fas fa-bars fa-lg"></i>
@@ -86,6 +95,10 @@
       </div>
     </section>
 
+
+
+
+
     <section class="mt-10">
   <h2 class="text-2xl font-bold mb-4 text-yellow-400">My Crypto Portfolio</h2>
 
@@ -115,7 +128,7 @@
 
   <footer class="bg-black border-t border-gray-800 py-4 mt-12">
     <div class="container mx-auto text-center text-gray-500 text-sm">
-      &copy; 2024 Binance Clone. All rights reserved.
+      &copy; 2026 DEFINN 
     </div>
   </footer>
 
@@ -150,7 +163,7 @@
     return;
   }
 
-  // STEP 1: Ask backend to process purchase
+  
   const res = await fetch("http://localhost:3000/api/crypto/buy", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -168,7 +181,7 @@
     return;
   }
 
-  // STEP 2: MetaMask authorization (no ETH required)
+  
   await window.ethereum.request({
     method: "personal_sign",
     params: [
@@ -198,7 +211,6 @@
     return;
   }
 
-  // STEP 1: Ask backend to sell
   const res = await fetch("http://localhost:3000/api/crypto/sell", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -216,7 +228,6 @@
     return;
   }
 
-  // STEP 2: MetaMask authorization
   await window.ethereum.request({
     method: "personal_sign",
     params: [
@@ -345,7 +356,6 @@ async function loadCryptoPortfolio() {
     tbody.innerHTML = "";
 
     for (const h of holdings) {
-      // Get live price from Binance
       const priceRes = await fetch(
         `https://api.binance.com/api/v3/ticker/price?symbol=${h.symbol}`
       );
@@ -385,7 +395,7 @@ async function loadCryptoPortfolio() {
 
 
 
-    const cryptoNewsApiKey = 'pub_84295477a80254ff20c10a6efef160f61e22e';
+     const cryptoNewsApiKey = 'pub_84295477a80254ff20c10a6efef160f61e22e';
 
     async function fetchCryptoNews() {
       const newsContainer = document.getElementById('news-container');
@@ -423,6 +433,63 @@ async function loadCryptoPortfolio() {
       }
     }
   </script>
+
+<script>
+window.addEventListener("load", async () => {
+
+  const container = document.getElementById("cryptoChart");
+
+  const chart = LightweightCharts.createChart(container, {
+    width: container.clientWidth,
+    height: 420,
+    layout: {
+      background: { color: "#020617" },
+      textColor: "#e5e7eb",
+    },
+    grid: {
+      vertLines: { color: "rgba(255,255,255,0.06)" },
+      horzLines: { color: "rgba(255,255,255,0.06)" },
+    },
+    timeScale: {
+      timeVisible: true,
+      secondsVisible: false,
+    },
+  });
+
+  const candleSeries = chart.addCandlestickSeries({
+    upColor: "#22c55e",
+    downColor: "#ef4444",
+    borderUpColor: "#22c55e",
+    borderDownColor: "#ef4444",
+    wickUpColor: "#22c55e",
+    wickDownColor: "#ef4444",
+  });
+
+  const res = await fetch(
+    "https://api.coingecko.com/api/v3/coins/bitcoin/ohlc?vs_currency=inr&days=1"
+  );
+
+  const raw = await res.json();
+
+  const candles = raw.map(c => ({
+    time: new Date(c[0]).toISOString().split("T")[0],
+    open: c[1],
+    high: c[2],
+    low: c[3],
+    close: c[4],
+  }));
+
+  candleSeries.setData(candles);
+  chart.timeScale().fitContent();
+
+  window.addEventListener("resize", () => {
+    chart.applyOptions({ width: container.clientWidth });
+  });
+
+});
+</script>
+
+
 
 </body>
 </html>
